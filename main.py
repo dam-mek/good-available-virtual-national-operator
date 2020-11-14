@@ -9,16 +9,12 @@ from log import log
 from GoogleSheet.GoogleSheet import GoogleSheet
 
 # TODO
-#  1) Синонимы (допилить чуть Engine)
-#  2) Логирование (logging)
-#  3) Приколы в messages.video
-#  4) Залить на свой гит
+#  Логирование (logging)
+#  sql базы данных
 
-token = environ.get('TOKEN_AMB')
-import config
-token = config.TOKEN
-password = environ.get('PASSWORD_AMB')
-# server = Flask(__name__)
+token = environ.get('TOKEN_GAVNO')
+password = environ.get('PASSWORD_GAVNO')
+server = Flask(__name__)
 bot = telebot.TeleBot(token, parse_mode='markdown')
 db = GoogleSheet()
 params_for_questions = dict(
@@ -32,7 +28,7 @@ subjects_of_teacher = set()
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    # send_mail(message)
+    send_mail(message)
     log(message)
     bot.send_message(chat_id=message.chat.id, text=messages.START, reply_markup=markups.none_markup)
     msg = bot.send_message(chat_id=message.chat.id, text=messages.ENTER_PASSWORD, reply_markup=markups.none_markup)
@@ -204,19 +200,18 @@ def send_mail(message):
     mail_account.quit()
 
 
-# @server.route('/' + token, methods=['POST'])
-# def getMessage():
-#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-#     return 'Ну типа АнтиМазур запущен', 200
-#
-#
-# @server.route("/")
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url='https://anti-mazur.herokuapp.com/' + token)
-#     return 'Ну типа АнтиМазур запущен, а я нужен для вебхука', 200
+@server.route('/' + token, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return 'Ну типа гавно запущен', 200
+
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://go-av-vi-na-op.herokuapp.com/' + token)
+    return 'Ну типа гавно запущен, а я нужен для вебхука', 200
 
 
 if __name__ == '__main__':
-    bot.polling()
-    # server.run(host="0.0.0.0", port=int(environ.get('PORT', 5000)))
+    server.run(host="0.0.0.0", port=int(environ.get('PORT', 5000)))
