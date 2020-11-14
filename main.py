@@ -3,6 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 import telebot
+from flask import Flask, request
 
 from stuff import markups, messages
 from log import log
@@ -194,6 +195,7 @@ def send_mail(message):
     msg['From'] = email
     msg['To'] = email
     msg['Subject'] = f'Logging. {message.from_user.username} {message.from_user.first_name} sent a message to the bot!'
+    from log import create_log_str
     text_message = create_log_str(message)
     msg.attach(MIMEText(text_message, 'plain'))
     mail_account.send_message(from_addr=email, to_addrs=msg['To'], msg=msg)
