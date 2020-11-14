@@ -1,5 +1,4 @@
 httplib2
-googleapiclient
 google-api-python-client
 gspread
 certifi==2020.4.5.1
