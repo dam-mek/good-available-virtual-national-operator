@@ -1,3 +1,4 @@
+uritemplate
 httplib2
 google-api-python-client
 gspread
